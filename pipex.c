@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:48:39 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/01/16 17:03:31 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:44:31 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,63 +208,46 @@ void	join_withslash(t_allvar *allvar)
 	}	
 }
 
-int	check_cmd(char *cmd, t_allvar *allvar, int n)
+void	check_cmd(char *cmd, t_allvar *allvar, int n, int *cp)
 {
 	allvar->split_it = ft_split(cmd, ' ');
-	allvar->i = 0;
-	allvar->j = 0;
-	while (allvar->res[allvar->i])
+	allvar->i = -1;
+	while (allvar->res[++allvar->i])
 	{
-		if (access(ft_strjoin(allvar->res[allvar->i], allvar->split_it[0]), X_OK) == 0)
+		if (access(ft_strjoin(allvar->res[allvar->i], allvar->split_it[0]), F_OK) == 0)
 		{
-			if (n == 2)
-			{
-				allvar->path1 = allvar->res[allvar->i];
-				allvar->cmd1 = ft_strjoin(allvar->path1, allvar->split_it[0]);
-			}
-			if (n == 3)
-			{
-				allvar->path2 = allvar->res[allvar->i];
-				allvar->cmd2 = ft_strjoin(allvar->path2, allvar->split_it[0]);
-			}
-			return 1;
+			allvar->paths[n] = ft_strjoin(allvar->res[allvar->i], allvar->split_it[0]);
+			(*cp)++;
 		}
-		allvar->i++;
 	}
-	return 0;
 }
-
-// void	tba3(char **cmd, t_allvar *allvar)
-// {
-// 	allvar->i = 0;
-// 	allvar->j = 0;
-// 	while (cmd[allvar->i])
-// 	{
-// 		printf("-->%s ", cmd[allvar->i]);
-// 		printf("\n");
-// 		allvar->i++;
-// 	}
-// }
 
 void	parsing(int ac, char **av, char **env, t_allvar *allvar)
 {
-	if (ac != 5)
-		write_error(2);
+	// if (ac != 5)
+	// 	write_error(2);
 	find_path(env, allvar);
 	ft_strchr(allvar);
 	allvar->res = ft_split(allvar->str, ':');
 	join_withslash(allvar);
-	if (!check_cmd(av[2], allvar, 2))
-		write_error(2);
-	if(!check_cmd(av[3], allvar, 3))
-		write_error(2);
-	allvar->allcmd1 = ft_split(av[2], ' ');
-	allvar->allcmd2 = ft_split(av[3], ' ');
+	allvar->paths = malloc(sizeof(char *) * (ac - 2));
+	int i = -1;
+	int	cp;
+	while (++i < ac - 3)
+	{
+		cp = 0;
+		check_cmd(av[i + 2], allvar, i, &cp);
+		if (cp == 0)
+			write_error(2);
+	}
+	allvar->paths[i] = 0;
+	// allvar->allcmd1 = ft_split(av[2], ' ');
+	// allvar->allcmd2 = ft_split(av[3], ' ');
 	//	for(int i = 0 ; allvar->res[i] != NULL; i++)
 	//		printf("=>%s\n", allvar->res[i]);
-	printf("\033[0;32m");
-	printf("PARSING DONE ✓✓✓\n");
-	printf("\033[0m");
+	// printf("\033[0;32m");
+	// printf("PARSING DONE ✓✓✓\n");
+	// // printf("\033[0m");
 }
 
 void	tba3(char **tab)
@@ -274,44 +257,95 @@ void	tba3(char **tab)
 		puts(tab[i++]);
 }
 
+
+
 int main(int ac, char **av, char **env)
 {
 	t_allvar	allvar;
 	int			id;
 	int			fd[2];
 
-	//tba3(env);
 	parsing(ac, av, env, &allvar);
-	printf("cmd1 => %s\n", allvar.cmd1);
-	printf("cmd2 => %s\n", allvar.cmd2);
-	pipe(fd);
-	id = fork();
-	if (id == 0)
+	
+	int	fd1 = open(av[1], O_RDONLY);
+	int	fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	int i = -1;
+	while (++i < ac - 3)
 	{
-		close(fd[0]);
-		int f1 = open(av[1], O_RDONLY);
-		dup2(f1 ,0);
-		dup2(fd[1], 1);
-		char *args[] = {allvar.cmd1, *allvar.allcmd1, NULL};
-		execve(args[0], &args[1], env);
+		
+		if (pipe(fd) < 0)
+			exit(1);
+		id = fork();
+		if (id < 0)
+			exit(1);
+		if (id == 0)
+		{
+			if (i == 0)
+			{
+				if (dup2(fd1, 0) < 0)
+					exit(1);
+			}
+			if (i == ac - 4)
+			{
+				if (dup2(fd2, 1) < 0)
+					exit(1);
+			}
+			else
+			{
+				if (dup2(fd[1], 1) < 0)
+					exit(1);
+			}
+			close(fd[1]);
+			close(fd[0]);
+			if(0 > execve(allvar.paths[i], ft_split(av[i + 2], ' '), env))
+			{
+				write(2, "Errooooor\n", 10);
+				exit(1);
+			}
+		}
+		if (dup2(fd[0], 0) < 0)
+			exit(1);
 		close(fd[1]);
-		close(f1);
+		close(fd[0]);
 	}
-	pid_t id2 = fork();
-	if (id2 == 0)
+
+	
+
+	// 	tba3(allvar.allcmd1);
+	// pipe(fd);
+	// id = fork();
+	// if (id == 0)
+	// {
+	// 	int f1 = open(av[1], O_RDONLY);
+	// 	dup2(f1 ,0);
+	// 	dup2(fd[1], 1);
+	// 	close(fd[1]);
+	// 	close(fd[0]);
+	// 	execve(allvar.cmd1, allvar.allcmd1, env);
+	// }
+	// dup2(fd[0], 0);
+	// pid_t id2 = fork();
+	// if (id2 == 0)
+	// {
+	// 	int f2 = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	// 	// dup2(fd[1], 1);
+	// 	dup2(f2 ,1);
+	// 	close(fd[1]);
+	// 	close(fd[0]);
+	// 	execve(allvar.cmd2, allvar.allcmd2, env);
+	// }
+	// dup2(fd[0], 0);
+	// close(fd[0]);
+	// close(fd[1]);
+	while(1)
 	{
-		close(fd[1]);
-		int f2 = open(av[4], O_RDWR);
-		dup2(f2 ,1);
-		dup2(fd[0], 0);
-		char *args[] = {allvar.cmd2, *allvar.allcmd2, NULL};
-		execve(args[0], &args[1], env);
-		close(f2);
-		close(fd[0]);
+		if (wait(NULL) == -1)
+			break ;
 	}
-	close(fd[0]);
-	close(fd[1]);
-	wait(NULL);
-	wait(NULL);
 	return 0;
 }
+
+// paths of all cmds
+// ./pipex_bonus here_doc limiter + \n
+// if here_doc open file .tmp
+// at9ra mn 0 otktb fih (.tmp)
