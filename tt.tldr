@@ -58052,6 +58052,72 @@
               ]
             ],
             "isComplete": true
+          },
+          "e8869dc0-9d6d-4801-25e9-aa975392d720": {
+            "id": "e8869dc0-9d6d-4801-25e9-aa975392d720",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 442,
+            "point": [
+              1675.52,
+              2758.85
+            ],
+            "rotation": 0,
+            "text": "man",
+            "style": {
+              "color": "lightGray",
+              "size": "small",
+              "isFilled": false,
+              "dash": "solid",
+              "scale": 2.0320833333333375,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "02b088f4-9ee0-4f02-1273-bd53d3a53e63": {
+            "id": "02b088f4-9ee0-4f02-1273-bd53d3a53e63",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 443,
+            "point": [
+              1675.25,
+              2817.62
+            ],
+            "rotation": 0,
+            "text": "bon",
+            "style": {
+              "color": "lightGray",
+              "size": "small",
+              "isFilled": false,
+              "dash": "solid",
+              "scale": 2.506046511627909,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "2bbfc695-c2f2-4938-184b-0e563c6f3ee8": {
+            "id": "2bbfc695-c2f2-4938-184b-0e563c6f3ee8",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 444,
+            "point": [
+              1713.42,
+              2926.64
+            ],
+            "rotation": 0,
+            "text": "here_doc   ==>  ac == 6\n!here_doc  ==>  ac >= 5",
+            "style": {
+              "color": "lightGray",
+              "size": "small",
+              "isFilled": false,
+              "dash": "solid",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {}
