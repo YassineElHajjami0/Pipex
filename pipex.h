@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:52:59 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/01 11:08:05 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:42:20 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ typedef struct s_allvar
 }		t_allvar;
 
 char	**ft_split(char const *s, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoinn(char const *s1, char const *s2);
 void	write_error(int n);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
-size_t	ft_strlen(const char *c);
+size_t	ft_strlenn(const char *c);
 void	check_cmd(char *cmd, t_allvar *allvar, int n);
 void	join_withslash(t_allvar *allvar);
+int	ft_strcmp(char *s1, char *s2);
 
 #endif

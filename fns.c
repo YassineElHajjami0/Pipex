@@ -6,13 +6,13 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:51:22 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/01/31 14:06:11 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:42:03 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoinn(char const *s1, char const *s2)
 {
 	int		i;
 	int		j;
@@ -64,7 +64,17 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-size_t	ft_strlen(const char *c)
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+size_t	ft_strlenn(const char *c)
 {
 	size_t	i;
 

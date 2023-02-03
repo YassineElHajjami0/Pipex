@@ -6,17 +6,18 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:55:31 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/01 11:06:24 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:05:44 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include "get_next_line.h"
 
 void	parsing(int ac, char **av, char **env, t_allvar *allvar)
 {
 	int i = -1;
-	if (ac < 5 || (ac != 6  && (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0))
-	||  (ac != 6  && (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) != 0) && ac < 5))
+	if (ac < 5 || (ac != 6  && (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) == 0))
+	||  (ac != 6  && (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) != 0) && ac < 5))
 		write_error(2);
 	allvar->p = -1;
 	while (env[++i])
@@ -28,7 +29,7 @@ void	parsing(int ac, char **av, char **env, t_allvar *allvar)
 	allvar->paths = malloc(sizeof(char *) * (ac - 2));
 	allvar->z = 2;
 	allvar->k = 3;
-	if (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0)
+	if (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) == 0)
 	{
 		allvar->z = 3;
 		allvar->k = 4;	
@@ -43,6 +44,17 @@ void	parsing(int ac, char **av, char **env, t_allvar *allvar)
 	allvar->paths[allvar->p] = 0;
 }
 
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	if (fd < 0 || !s)
+		return ;
+	i = 0;
+	while (s[i])
+		write(fd, &s[i++], 1);
+}
+
 int main(int ac, char **av, char **env)
 {
 	t_allvar	allvar;
@@ -52,10 +64,8 @@ int main(int ac, char **av, char **env)
 	int	fd2;
 	allvar.bonus = 1;
 	parsing(ac, av, env, &allvar);
-	allvar.k = 3;
-	if (ft_strncmp(av[1], "here_doc", ft_strlen(av[1])) == 0)
+	if (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) == 0)
 	{
-		allvar.k = 4;
 		fd1 = open(".temp", O_CREAT | O_WRONLY, 0666);
 		fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_APPEND, 0666);
 	}
@@ -66,8 +76,21 @@ int main(int ac, char **av, char **env)
 	}
 	if (fd1 < 0 || fd2 < 0)
 		write_error(2);
+
+	if (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) == 0)
+	{
+		char *line = get_next_line(0);
+		while (line && ft_strcmp(line, ft_strjoinn(av[2], "\n")))
+		{
+			ft_putstr_fd(line, fd1);
+			free(line);
+			line = get_next_line(0);
+		}
+		close(fd1);
+		fd1 = open(".temp", O_RDONLY);
+	}
+
 	int i = -1;
-	printf("hamdulah\n");
 	while (++i < ac - allvar.k)
 	{
 		if (pipe(fd) < 0)
@@ -94,7 +117,7 @@ int main(int ac, char **av, char **env)
 			}
 			close(fd[1]);
 			close(fd[0]);
-			if(0 > execve(allvar.paths[i], ft_split(av[i + 2], ' '), env))
+			if(0 > execve(allvar.paths[i], ft_split(av[i + allvar.z], ' '), env))
 			{
 				write(2, "Errooooor\n", 10);
 				exit(1);
@@ -111,6 +134,6 @@ int main(int ac, char **av, char **env)
 		if (wait(NULL) == -1)
 			break ;
 	}
-	while(1){}
+	unlink(".temp");
 	return 0;
 }

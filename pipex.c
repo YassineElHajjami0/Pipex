@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:48:39 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/01 11:10:02 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/02 15:22:44 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,18 @@ void	paarsing(int ac, char **av, char **env, t_allvar *allvar)
 	allvar->paths[allvar->p] = 0;
 }
 
+void my(void)
+{
+	system("leaks pipex");
+}
+
 int main(int ac, char **av, char **env)
 {
 	t_allvar	allvar;
 	int			id;
 	int			fd[2];
 
+	atexit(my);
 	allvar.bonus = 0;
 	paarsing(ac, av, env, &allvar);
 	int	fd1 = open(av[1], O_RDONLY);
@@ -116,6 +122,5 @@ int main(int ac, char **av, char **env)
 		if (wait(NULL) == -1)
 			break ;
 	}
-	while(1){}
 	return 0;
 }
