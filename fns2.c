@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:19:38 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:16:50 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:43:36 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	join_withslash(t_allvar *allvar)
 	allvar->j = 0;
 	while (allvar->res[allvar->i])
 	{
+		free(allvar->res[allvar->i]);
 		allvar->res[allvar->i] = ft_strjoinn(allvar->res[allvar->i], "/");
 		allvar->i++;
 	}
@@ -28,7 +29,7 @@ void	join_withslash(t_allvar *allvar)
 void	check_cmd(char *cmd, t_allvar *allvar, int n)
 {
 	allvar->split_it = ft_split(cmd, ' ');
-	if ((*allvar->split_it)[0] == '/' || (*allvar->split_it)[0] == '.')
+	if (allvar->split_it[0][0] == '/' || allvar->split_it[0][0] == '.')
 	{
 		allvar->paths[n] = (*allvar->split_it);
 		allvar->j++;
@@ -46,4 +47,5 @@ void	check_cmd(char *cmd, t_allvar *allvar, int n)
 		}
 		free(allvar->join);
 	}
+	free_all(allvar->split_it);
 }

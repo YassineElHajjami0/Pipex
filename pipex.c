@@ -6,16 +6,11 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:48:39 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:22:38 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:57:16 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	my(void)
-{
-	system("leaks pipex");
-}
 
 int	main(int ac, char **av, char **env)
 {
@@ -29,5 +24,7 @@ int	main(int ac, char **av, char **env)
 		write_error(2);
 	allvar.i = -1;
 	loop_cmds(&allvar, ac, av, env);
+	free_all(allvar.res);
+	free_all(allvar.paths);
 	return (0);
 }

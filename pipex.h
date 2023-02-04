@@ -6,18 +6,17 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:52:59 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:26:49 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:05:54 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	PIPEX_H
+#ifndef PIPEX_H
 # define PIPEX_H
 # include <stdio.h>
-# include <sys/types.h>
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <sys/wait.h>
+# include <limits.h>
 
 typedef struct s_allvar
 {
@@ -27,7 +26,7 @@ typedef struct s_allvar
 	int		id;
 	int		i;
 	int		j;
-	int		z; 
+	int		z;
 	int		k;
 	int		p;
 	int		bonus;
@@ -35,9 +34,6 @@ typedef struct s_allvar
 	char	*str;
 	char	**res;
 	char	**paths;
-	char	**allcmd1;
-	char	**allcmd2;
-	char	**cmds;
 	char	**split_it;
 
 }			t_allvar;
@@ -61,5 +57,6 @@ void	paarsing(int ac, char **av, char **env, t_allvar *allvar);
 void	protection(t_allvar *allvar);
 void	child_process(t_allvar *allvar, int ac, char **av, char **env);
 void	loop_cmds(t_allvar *allvar, int ac, char **av, char **env);
+void	free_all(char **res);
 
 #endif

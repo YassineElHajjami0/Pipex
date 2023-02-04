@@ -6,7 +6,7 @@
 #    By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/26 15:51:06 by yel-hajj          #+#    #+#              #
-#    Updated: 2023/02/04 14:43:16 by yel-hajj         ###   ########.fr        #
+#    Updated: 2023/02/04 17:46:21 by yel-hajj         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRCBON = pipex_bonus.c \
 		get_next_line.c \
 		parsing_bns.c \
 		bns_process.c \
+		man_process.c \
 
 all: $(NAME)
 bonus: $(BONUS)

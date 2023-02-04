@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:21:18 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:14:51 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:56:35 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ void	some_checks(t_allvar *allvar, int ac, char **av)
 void	read_data(t_allvar *allvar, char **av)
 {
 	char	*line;
+	char	*limit;
 
 	if (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) == 0)
 	{
+		limit = ft_strjoinn(av[2], "\n");
 		line = get_next_line(0);
-		while (line && ft_strcmp(line, ft_strjoinn(av[2], "\n")))
+		while (line && ft_strcmp(line, limit))
 		{
 			ft_putstr_fd(line, allvar->fd1);
 			free(line);
@@ -44,6 +46,8 @@ void	read_data(t_allvar *allvar, char **av)
 		}
 		close(allvar->fd1);
 		allvar->fd1 = open(".temp", O_RDONLY);
+		free(line);
+		free(limit);
 	}
 }
 

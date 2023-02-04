@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:55:31 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:24:37 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:57:06 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	main(int ac, char **av, char **env)
 	some_checks(&allvar, ac, av);
 	read_data(&allvar, av);
 	loop_on_data(&allvar, ac, av, env);
+	free_all(allvar.res);
+	free_all(allvar.paths);
 	unlink(".temp");
 	return (0);
 }

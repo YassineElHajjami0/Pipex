@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:23:01 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:18:44 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 17:44:34 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,16 @@ void	child_process(t_allvar *allvar, int ac, char **av, char **env)
 		write(2, "Error\n", 6);
 		exit(1);
 	}
+}
+
+void	free_all(char **res)
+{
+	int	i;
+
+	i = -1;
+	while (res[++i])
+		free(res[i]);
+	free(res);
 }
 
 void	loop_cmds(t_allvar *allvar, int ac, char **av, char **env)
