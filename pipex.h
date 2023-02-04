@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:52:59 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/03 16:42:20 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/04 09:57:08 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 
 typedef struct s_allvar
 {
+	int		fd[2];
+	int		fd1;
+	int		fd2;
+	int		id;
 	int		i;
 	int		j;
 	int		z; 
