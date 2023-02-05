@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:52:59 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 17:05:54 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/05 09:08:13 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ void	parsing(int ac, char **av, char **env, t_allvar *allvar);
 void	ft_putstr_fd(char *s, int fd);
 void	some_checks(t_allvar *allvar, int ac, char **av);
 void	read_data(t_allvar *allvar, char **av);
-void	protections(t_allvar *allvar);
+void	protections(t_allvar *allvar, int ac, char **av, char **env);
 void	the_child_process(t_allvar *allvar, int ac, char **av, char **env);
 void	loop_on_data(t_allvar *allvar, int ac, char **av, char **env);
 void	paarsing(int ac, char **av, char **env, t_allvar *allvar);
-void	protection(t_allvar *allvar);
+void	protection(t_allvar *allvar, int ac, char **av, char **env);
 void	child_process(t_allvar *allvar, int ac, char **av, char **env);
 void	loop_cmds(t_allvar *allvar, int ac, char **av, char **env);
 void	free_all(char **res);

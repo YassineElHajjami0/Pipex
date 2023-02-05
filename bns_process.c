@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:21:18 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 17:56:35 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/05 09:05:39 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,6 @@ void	read_data(t_allvar *allvar, char **av)
 	}
 }
 
-void	protections(t_allvar *allvar)
-{
-	if (pipe(allvar->fd) < 0)
-		exit(1);
-	allvar->id = fork();
-	if (allvar->id < 0)
-		exit(1);
-}
-
 void	the_child_process(t_allvar *allvar, int ac, char **av, char **env)
 {
 	if (allvar->i == 0)
@@ -82,9 +73,22 @@ void	the_child_process(t_allvar *allvar, int ac, char **av, char **env)
 	if (0 > execve(allvar->paths[allvar->i],
 			ft_split(av[allvar->i + allvar->z], ' '), env))
 	{
-		write(2, "Errooooor\n", 10);
+		write(2, "Error\n", 6);
 		exit(1);
 	}
+}
+
+void	protections(t_allvar *allvar, int ac, char **av, char **env)
+{
+	if (pipe(allvar->fd) < 0)
+		exit(1);
+	allvar->id = fork();
+	if (allvar->id < 0)
+		exit(1);
+	if (allvar->id == 0)
+		the_child_process(allvar, ac, av, env);
+	if (dup2(allvar->fd[0], 0) < 0)
+		exit(1);
 }
 
 void	loop_on_data(t_allvar *allvar, int ac, char **av, char **env)
@@ -92,11 +96,7 @@ void	loop_on_data(t_allvar *allvar, int ac, char **av, char **env)
 	allvar->i = -1;
 	while (++allvar->i < ac - allvar->k)
 	{
-		protections(allvar);
-		if (allvar->id == 0)
-			the_child_process(allvar, ac, av, env);
-		if (dup2(allvar->fd[0], 0) < 0)
-			exit(1);
+		protections(allvar, ac, av, env);
 		close(allvar->fd[1]);
 		close(allvar->fd[0]);
 	}

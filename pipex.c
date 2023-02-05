@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 15:48:39 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 17:57:16 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/05 08:39:47 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(int ac, char **av, char **env)
 {
 	t_allvar	allvar;
 
-	allvar.bonus = 0;
 	paarsing(ac, av, env, &allvar);
 	allvar.fd1 = open(av[1], O_RDONLY);
 	allvar.fd2 = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
