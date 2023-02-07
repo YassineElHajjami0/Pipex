@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:19:38 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 17:43:36 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:40:34 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,19 @@ void	check_cmd(char *cmd, t_allvar *allvar, int n)
 		free(allvar->join);
 	}
 	free_all(allvar->split_it);
+}
+
+void	check_av(int ac, char **av, char **env, int n)
+{
+	int	i;
+
+	if (!env)
+		write_error(2);
+	i = 1;
+	while (i <= ac - n)
+	{
+		if (!av[i] || (ft_strlenn(av[i]) == 0))
+			write_error(2);
+		i++;
+	}
 }

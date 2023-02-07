@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:23:01 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/05 09:08:35 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:42:43 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 
 void	paarsing(int ac, char **av, char **env, t_allvar *allvar)
 {
-	int	i;
-
-	i = -1;
+	allvar->i = -1;
 	if (ac != 5)
 		write_error(2);
+	check_av(ac, av, env, 1);
 	allvar->p = -1;
-	while (env[++i])
+	while (env[++allvar->i])
 	{
-		if (!ft_strncmp(env[i], "PATH=", 5))
-			allvar->res = ft_split(env[i] + 5, ':');
+		if (!ft_strncmp(env[allvar->i], "PATH=", 5))
+			allvar->res = ft_split(env[allvar->i] + 5, ':');
 	}
+	if (!allvar->res)
+		write_error(2);
 	join_withslash(allvar);
 	allvar->paths = malloc(sizeof(char *) * (ac - 2));
 	allvar->z = 2;
@@ -43,17 +44,17 @@ void	child_process(t_allvar *allvar, int ac, char **av, char **env)
 	if (allvar->i == 0)
 	{
 		if (dup2(allvar->fd1, 0) < 0)
-			exit(1);
+			write_error(2);
 	}
 	if (allvar->i == ac - 4)
 	{
 		if (dup2(allvar->fd2, 1) < 0)
-			exit(1);
+			write_error(2);
 	}
 	else
 	{
 		if (dup2(allvar->fd[1], 1) < 0)
-			exit(1);
+			write_error(2);
 	}
 	close(allvar->fd[1]);
 	close(allvar->fd[0]);
@@ -68,14 +69,14 @@ void	child_process(t_allvar *allvar, int ac, char **av, char **env)
 void	protection(t_allvar *allvar, int ac, char **av, char **env)
 {
 	if (pipe(allvar->fd) < 0)
-		exit(1);
+		write_error(2);
 	allvar->id = fork();
 	if (allvar->id < 0)
-		exit(1);
+		write_error(2);
 	if (allvar->id == 0)
 		child_process(allvar, ac, av, env);
 	if (dup2(allvar->fd[0], 0) < 0)
-		exit(1);
+		write_error(2);
 }
 
 void	free_all(char **res)

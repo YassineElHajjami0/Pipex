@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:21:18 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/05 09:05:39 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/05 16:32:06 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,17 @@ void	the_child_process(t_allvar *allvar, int ac, char **av, char **env)
 	if (allvar->i == 0)
 	{
 		if (dup2(allvar->fd1, 0) < 0)
-			exit(1);
+			write_error(2);
 	}
 	if (allvar->i == ac - (allvar->k + 1))
 	{			
 		if (dup2(allvar->fd2, 1) < 0)
-			exit(1);
+			write_error(2);
 	}
 	else
 	{
 		if (dup2(allvar->fd[1], 1) < 0)
-			exit(1);
+			write_error(2);
 	}
 	close(allvar->fd[1]);
 	close(allvar->fd[0]);
@@ -81,14 +81,14 @@ void	the_child_process(t_allvar *allvar, int ac, char **av, char **env)
 void	protections(t_allvar *allvar, int ac, char **av, char **env)
 {
 	if (pipe(allvar->fd) < 0)
-		exit(1);
+		write_error(2);
 	allvar->id = fork();
 	if (allvar->id < 0)
-		exit(1);
+		write_error(2);
 	if (allvar->id == 0)
 		the_child_process(allvar, ac, av, env);
 	if (dup2(allvar->fd[0], 0) < 0)
-		exit(1);
+		write_error(2);
 }
 
 void	loop_on_data(t_allvar *allvar, int ac, char **av, char **env)

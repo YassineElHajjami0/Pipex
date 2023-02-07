@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:52:59 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/05 09:08:13 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:40:28 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,7 @@ void	protection(t_allvar *allvar, int ac, char **av, char **env);
 void	child_process(t_allvar *allvar, int ac, char **av, char **env);
 void	loop_cmds(t_allvar *allvar, int ac, char **av, char **env);
 void	free_all(char **res);
+void	check_env_path(char **env);
+void	check_av(int ac, char **av, char **env, int n);
 
 #endif

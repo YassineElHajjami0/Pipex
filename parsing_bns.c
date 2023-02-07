@@ -6,7 +6,7 @@
 /*   By: yel-hajj <yel-hajj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 14:15:04 by yel-hajj          #+#    #+#             */
-/*   Updated: 2023/02/04 15:21:53 by yel-hajj         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:48:09 by yel-hajj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	help_parsing(t_allvar *allvar, int ac, char **av)
 	}
 	while (++allvar->p < ac - allvar->k)
 	{
+		if (!av[allvar->p + allvar->z])
+			write_error(2);
 		allvar->j = 0;
 		check_cmd(av[allvar->p + allvar->z], allvar, allvar->p);
 		if (allvar->j == 0)
@@ -33,6 +35,7 @@ void	parsing(int ac, char **av, char **env, t_allvar *allvar)
 {
 	int	i;
 
+	check_av(ac, av, env, 1);
 	i = -1;
 	if (ac < 5 || (ac != 6
 			&& (ft_strncmp(av[1], "here_doc", ft_strlenn(av[1])) == 0))
@@ -45,6 +48,8 @@ void	parsing(int ac, char **av, char **env, t_allvar *allvar)
 		if (!ft_strncmp(env[i], "PATH=", 5))
 			allvar->res = ft_split(env[i] + 5, ':');
 	}
+	if (!allvar->res)
+		write_error(2);
 	join_withslash(allvar);
 	allvar->paths = malloc(sizeof(char *) * (ac - 2));
 	allvar->z = 2;
